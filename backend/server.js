@@ -91,11 +91,11 @@ app.delete('/api/photos/:id', async (req, res) => {
 // ОБНОВЛЕНИЕ ТЕКСТА ФОТОГРАФИИ
 app.put('/api/photos/:id', async (req, res) => {
   try {
-    const { text } = req.body; // Получаем новый текст от фронтенда
+    const { caption } = req.body; // ИЗМЕНИЛИ text на caption
     const updatedPhoto = await Photo.findByIdAndUpdate(
       req.params.id,
-      { text: text }, // Что обновляем
-      { new: true }   // Просим базу вернуть уже обновленный документ
+      { caption: caption },       // ИЗМЕНИЛИ text на caption
+      { new: true }
     );
     res.json(updatedPhoto);
   } catch (error) {

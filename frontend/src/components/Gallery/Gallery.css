@@ -93,3 +93,94 @@
         opacity: 1;
     }
 }
+
+/* Gallery.css */
+
+/* Основной контейнер для карточки и кнопок действий над ней */
+.polaroid-wrapper {
+    position: relative;
+    /* Критично для позиционирования иконок */
+    width: 100%;
+    transition: transform 0.3s ease;
+}
+
+/* Эффект легкого увеличения при наведении на всю карточку */
+.polaroid-wrapper:hover {
+    transform: scale(1.02);
+    z-index: 10;
+    /* Чтобы карточка была поверх соседних */
+}
+
+/* Контейнер для иконок действий (карандаш и крестик) */
+.polaroid-actions {
+    position: absolute;
+    top: 10px;
+    /* Отступ сверху */
+    right: 10px;
+    /* Отступ справа */
+    display: flex;
+    gap: 8px;
+    /* Расстояние между иконками */
+    z-index: 5;
+
+    /* ХИТРОСТЬ: по умолчанию они невидимы и прозрачны */
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    /* Плавное появление */
+}
+
+/* ЛОГИКА HOVER: когда мы наводим на .polaroid-wrapper,
+   мы показываем .polaroid-actions внутри него */
+.polaroid-wrapper:hover .polaroid-actions {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Стили для самих иконок-кнопок */
+.action-icon-btn {
+    background: rgba(255, 255, 255, 0.8);
+    /* Полупрозрачный фон */
+    border: none;
+    border-radius: 50%;
+    /* Делаем их круглыми */
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.1rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background 0.2s ease;
+}
+
+/* Эффект при наведении на саму иконку */
+.action-icon-btn:hover {
+    background: rgba(255, 255, 255, 1);
+    transform: scale(1.1);
+}
+
+/* Стили для режима редактирования (инпут под фото) */
+.edit-mode-container {
+    margin-top: 10px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.edit-input {
+    width: 90%;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #ff9a9e;
+    font-family: 'Caveat', cursive;
+    font-size: 1.1rem;
+}
+
+.edit-buttons {
+    display: flex;
+    gap: 10px;
+}

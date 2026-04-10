@@ -44,7 +44,8 @@ const Gallery = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ text: editText }),
+        // ИЗМЕНИЛИ text на caption вот здесь:
+        body: JSON.stringify({ caption: editText }),
       });
 
       if (response.ok) {
@@ -72,38 +73,55 @@ const Gallery = () => {
           columnClassName="my-masonry-grid_column"
         >
           {photos.map((photo) => (
-            <div key={photo._id} className="polaroid-wrapper" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            // ИСПОЛЬЗУЕМ НОВЫЙ CSS-КЛАСС
+            <div key={photo._id} className="polaroid-wrapper">
               
               <PolaroidCard 
                 image={photo.imageUrl} 
-                caption={photo.text || photo.caption} // Подстраховка: база может отдавать text или caption
+                caption={photo.text || photo.caption} 
                 onClick={() => setSelectedImage(photo.imageUrl)}
-                onDelete={() => setPhotoToDelete(photo._id)}
+                // onDelete УБРАЛИ ОТСЮДА! Мы управляем удалением снаружи
               />
 
-              {/* Вот тут начинается наша новая магия редактирования */}
-              {editingId === photo._id ? (
-                <div className="edit-mode" style={{ marginTop: '10px', display: 'flex', gap: '5px' }}>
-                  <input 
-                    type="text" 
-                    value={editText} 
-                    onChange={(e) => setEditText(e.target.value)} 
-                    placeholder="Новая подпись..."
-                    style={{ padding: '5px', borderRadius: '5px', border: '1px solid #ccc' }}
-                  />
-                  <button onClick={() => handleEditSave(photo._id)} style={{ cursor: 'pointer', background: 'none', border: 'none', fontSize: '1.2rem' }}>💾</button>
-                  <button onClick={() => setEditingId(null)} style={{ cursor: 'pointer', background: 'none', border: 'none', fontSize: '1.2rem' }}>❌</button>
-                </div>
-              ) : (
+              {/* Вот наш новый контейнер с иконками, который виден только на ховере */}
+              <div className="polaroid-actions">
+                {/* Кнопка Редактировать (Карандаш) */}
                 <button 
+                  className="action-icon-btn edit-icon"
                   onClick={() => {
                     setEditingId(photo._id);
                     setEditText(photo.text || photo.caption || '');
                   }}
-                  style={{ marginTop: '10px', cursor: 'pointer', background: 'none', border: 'none', color: '#ff9a9e', fontFamily: 'Caveat', fontSize: '1.2rem' }}
+                  title="Изменить текст"
                 >
-                  ✏️ Изменить текст
+                  ✏️
                 </button>
+
+                {/* Кнопка Удалить (Крестик) — теперь она здесь, рядом с карандашом */}
+                <button 
+                  className="action-icon-btn delete-icon"
+                  onClick={() => setPhotoToDelete(photo._id)}
+                  title="Удалить воспоминание"
+                >
+                  ❌
+                </button>
+              </div>
+
+              {/* Режим редактирования появляется под карточкой */}
+              {editingId === photo._id && (
+                <div className="edit-mode-container">
+                  <input 
+                    type="text" 
+                    className="edit-input"
+                    value={editText} 
+                    onChange={(e) => setEditText(e.target.value)} 
+                    placeholder="Новая подпись..."
+                  />
+                  <div className="edit-buttons">
+                    <button className="btn-save" onClick={() => handleEditSave(photo._id)}>💾 Сохранить</button>
+                    <button className="btn-cancel" onClick={() => setEditingId(null)}>Отмена</button>
+                  </div>
+                </div>
               )}
               
             </div>
