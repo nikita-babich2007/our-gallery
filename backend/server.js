@@ -88,6 +88,22 @@ app.delete('/api/photos/:id', async (req, res) => {
     }
 });
 
+// ОБНОВЛЕНИЕ ТЕКСТА ФОТОГРАФИИ
+app.put('/api/photos/:id', async (req, res) => {
+  try {
+    const { text } = req.body; // Получаем новый текст от фронтенда
+    const updatedPhoto = await Photo.findByIdAndUpdate(
+      req.params.id,
+      { text: text }, // Что обновляем
+      { new: true }   // Просим базу вернуть уже обновленный документ
+    );
+    res.json(updatedPhoto);
+  } catch (error) {
+    console.error('Ошибка при редактировании:', error);
+    res.status(500).json({ message: 'Ошибка сервера при обновлении' });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`✅ Сервер летит на порту ${PORT}`);
