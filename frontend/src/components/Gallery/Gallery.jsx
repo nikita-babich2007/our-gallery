@@ -85,22 +85,24 @@ const Gallery = () => {
 
               {/* Вот наш новый контейнер с иконками, который виден только на ховере */}
               <div className="polaroid-actions">
-                {/* Кнопка Редактировать (Карандаш) */}
                 <button 
                   className="action-icon-btn edit-icon"
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.stopPropagation(); // <--- ВОТ ЭТО
                     setEditingId(photo._id);
-                    setEditText(photo.text || photo.caption || '');
+                    setEditText(photo.caption || photo.text || '');
                   }}
                   title="Изменить текст"
                 >
                   ✏️
                 </button>
 
-                {/* Кнопка Удалить (Крестик) — теперь она здесь, рядом с карандашом */}
                 <button 
                   className="action-icon-btn delete-icon"
-                  onClick={() => setPhotoToDelete(photo._id)}
+                  onClick={(e) => {
+                    e.stopPropagation(); // <--- И ВОТ ЭТО
+                    setPhotoToDelete(photo._id);
+                  }}
                   title="Удалить воспоминание"
                 >
                   ❌
