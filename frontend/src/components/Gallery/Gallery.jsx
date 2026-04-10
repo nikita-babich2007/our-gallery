@@ -10,24 +10,23 @@ const Gallery = () => {
   const [photoToDelete, setPhotoToDelete] = useState(null); // Храним ID фото, которое хотим удалить
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/photos')
+    fetch('https://our-gallery-backend.onrender.com/api/photos')
       .then((res) => res.json())
       .then((data) => setPhotos(data))
       .catch((err) => console.error('Ошибка загрузки фото:', err));
   }, []);
 
-  // Эта функция реально удаляет фотку после подтверждения
   const executeDelete = async () => {
     if (!photoToDelete) return;
 
     try {
-      const response = await fetch(`http://localhost:5000/api/photos/${photoToDelete}`, {
+      const response = await fetch(`https://our-gallery-backend.onrender.com/api/photos/${photoToDelete}`, {
         method: 'DELETE',
       });
 
       if (response.ok) {
         setPhotos(photos.filter(photo => photo._id !== photoToDelete));
-        setPhotoToDelete(null); // Закрываем окошко
+        setPhotoToDelete(null);
       } else {
         alert('Упс, не удалось удалить фото...');
       }
@@ -66,7 +65,6 @@ const Gallery = () => {
         <Modal image={selectedImage} onClose={() => setSelectedImage(null)} />
       )}
 
-      {/* КАСТОМНОЕ ОКНО ПОДТВЕРЖДЕНИЯ УДАЛЕНИЯ */}
       {photoToDelete && (
         <div className="confirm-overlay">
           <div className="confirm-box">
