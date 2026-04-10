@@ -1,0 +1,57 @@
+.trail-particle {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 10000;
+    opacity: 0;
+    transform: translate(-50%, -50%);
+    animation: particleFadeAndFly 1.5s ease-out forwards;
+}
+
+.trail-heart {
+    width: 12px;
+    height: 12px;
+    background-color: rgba(255, 182, 193, 0.6);
+    transform: rotate(-45deg);
+}
+
+.trail-heart::before,
+.trail-heart::after {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background-color: rgba(255, 182, 193, 0.6);
+    border-radius: 50%;
+}
+
+.trail-heart::before {
+    top: -6px;
+    left: 0;
+}
+
+.trail-heart::after {
+    top: 0;
+    left: 6px;
+}
+
+.trail-sparkle {
+    width: 8px;
+    height: 8px;
+    background-color: rgba(255, 250, 240, 0.7);
+    border-radius: 50%;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+@keyframes particleFadeAndFly {
+    0% {
+        opacity: 0.6;
+        transform: translate(-50%, -50%) scale(1) translateY(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.5) translateY(-40px);
+    }
+}

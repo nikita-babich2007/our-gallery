@@ -1,0 +1,109 @@
+body::-webkit-scrollbar {
+  width: 10px;
+}
+
+body::-webkit-scrollbar-track {
+  background: #fdfbfb;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: #ffc3c6;
+  border-radius: 10px;
+  border: 2px solid #fdfbfb;
+}
+
+.app-container {
+  padding: 40px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: #fdfbfb;
+  min-height: 100vh;
+}
+
+h1 {
+  text-align: center;
+  font-family: 'Georgia', serif;
+  color: #333;
+  margin-bottom: 50px;
+  font-weight: normal;
+  letter-spacing: 2px;
+}
+
+/* --- Премиальные микро-детали --- */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #fdfbfb;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ffc3c6;
+  border-radius: 10px;
+  border: 2px solid #fdfbfb;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #ff9a9e;
+}
+
+::selection {
+  background: #ff9a9e;
+  color: white;
+}
+
+/* --- Универсальная адаптивность --- */
+@media (max-width: 1024px) {
+  .app-container {
+    padding: 30px 20px;
+    max-width: 95%;
+  }
+
+  .hero-title {
+    font-size: 2.2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 1.8rem;
+  }
+
+  .hero-container {
+    margin-bottom: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-container {
+    padding: 20px 10px;
+  }
+
+  .hero-title {
+    font-size: 1.4rem;
+    letter-spacing: 1px;
+  }
+
+  .fab-button {
+    width: 50px;
+    height: 50px;
+    bottom: 20px;
+    right: 20px;
+    font-size: 24px;
+  }
+}
+
+.app-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: clamp(15px, 3vw, 40px);
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: clamp(1.4rem, 6vw, 2.2rem) !important;
+    text-align: center;
+    padding: 0 15px;
+  }
+}

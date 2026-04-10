@@ -1,0 +1,95 @@
+.my-masonry-grid {
+    display: flex;
+    margin-left: -30px;
+    width: auto;
+}
+
+.my-masonry-grid_column {
+    padding-left: 30px;
+    background-clip: padding-box;
+}
+
+/* --- СТИЛИ ДЛЯ КРАСИВОГО ОКНА УДАЛЕНИЯ --- */
+.confirm-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 3000;
+    /* Поверх всего */
+}
+
+.confirm-box {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(255, 154, 158, 0.2);
+    border: 2px solid #ffe1e3;
+    max-width: 300px;
+    animation: popIn 0.3s ease forwards;
+    /* Анимация появления */
+}
+
+.confirm-box p {
+    font-family: 'Caveat', cursive;
+    font-size: 1.6rem;
+    color: #555;
+    margin-top: 0;
+    margin-bottom: 25px;
+}
+
+.confirm-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.confirm-buttons button {
+    flex: 1;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+}
+
+.btn-no {
+    background: #f0f0f0;
+    color: #555;
+}
+
+.btn-no:hover {
+    background: #e0e0e0;
+    transform: scale(1.05);
+}
+
+.btn-yes {
+    background: #ff6b70;
+    color: white;
+}
+
+.btn-yes:hover {
+    background: #ff4d54;
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(255, 107, 112, 0.4);
+}
+
+@keyframes popIn {
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}

@@ -1,0 +1,184 @@
+.tilt-wrapper {
+    margin-bottom: 30px;
+    cursor: pointer;
+}
+
+.polaroid-card {
+    background: #ffffff;
+    padding: 15px 15px 25px 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.3s ease;
+}
+
+.polaroid-card:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.image-wrapper img {
+    width: 100%;
+    display: block;
+    border-radius: 2px;
+}
+
+.polaroid-caption {
+    margin-top: 15px;
+    text-align: center;
+    font-family: 'Caveat', 'Comic Sans MS', cursive;
+    font-size: 1.3rem;
+    color: #444;
+}
+
+.polaroid-card {
+    background: white;
+    padding: 12px 12px 35px 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.polaroid-card:hover {
+    transform: translateY(-10px) rotate(2deg) scale(1.02);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    z-index: 10;
+}
+
+.image-container {
+    width: 100%;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.polaroid-image {
+    width: 100%;
+    display: block;
+    transition: transform 1.5s ease;
+}
+
+.polaroid-card:hover .polaroid-image {
+    transform: scale(1.1);
+}
+
+.polaroid-caption {
+    font-family: 'Caveat', cursive;
+    font-size: 1.2rem;
+    color: #555;
+    text-align: center;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+}
+
+.polaroid-card:hover .polaroid-caption {
+    opacity: 1;
+    color: #ff9a9e;
+}
+
+.polaroid-card {
+    background: white;
+    /* Умные отступы: минимум 8px, в идеале 1.5% ширины экрана, максимум 15px */
+    padding: clamp(8px, 1.5vw, 15px);
+    padding-bottom: clamp(25px, 4vw, 45px);
+
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.polaroid-card:hover {
+    transform: translateY(-10px) rotate(2deg) scale(1.02);
+    z-index: 10;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.polaroid-image {
+    width: 100%;
+    display: block;
+    transition: transform 1.5s ease;
+}
+
+.polaroid-card:hover .polaroid-image {
+    transform: scale(1.1);
+}
+
+.polaroid-caption {
+    font-family: 'Caveat', cursive;
+    font-size: clamp(1rem, 1.2vw, 1.3rem);
+    color: #555;
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* Контейнер для картинки */
+.image-container {
+    width: 100%;
+    overflow: hidden;
+    /* Обрезает края при зуме */
+    margin-bottom: 12px;
+    border-radius: 4px;
+    /* Чуть скруглим углы самой фотки */
+}
+
+/* Сама картинка */
+.polaroid-image {
+    width: 100%;
+    /* Занимает всю ширину карточки */
+    height: auto;
+    /* Высота подстраивается автоматически */
+    display: block;
+    /* Убирает странные отступы снизу */
+    object-fit: cover;
+    /* Заполняет пространство ровно, без сплющивания */
+    transition: transform 0.5s ease;
+}
+
+/* Зум при наведении (наша фишка) */
+.polaroid-card:hover .polaroid-image {
+    transform: scale(1.08);
+}
+
+/* Делаем саму карточку "точкой отсчета" для крестика */
+.polaroid-card {
+    position: relative;
+}
+
+/* Стили для кнопки-крестика */
+.delete-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 28px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.8);
+    border: none;
+    border-radius: 50%;
+    color: #ff6b70;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    /* Прячем крестик по умолчанию */
+    transition: opacity 0.3s ease, background 0.2s ease, transform 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Показываем крестик только когда мышка наведена на карточку */
+.polaroid-card:hover .delete-btn {
+    opacity: 1;
+}
+
+/* Эффект при наведении на сам крестик */
+.delete-btn:hover {
+    background: #ff6b70;
+    color: white;
+    transform: scale(1.1);
+}
