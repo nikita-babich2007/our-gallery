@@ -219,21 +219,28 @@
     opacity: 1;
 }
 
+/* Gallery.css */
+
 .action-icon-btn {
+    /* Уменьшим размер самой круглой кнопки (например, с 36px до 32px) */
+    width: 32px;
+    height: 32px;
+
+    /* Немного уменьшим размер шрифта иконки (например, с 1.2rem до 1rem) */
+    font-size: 1rem;
+
+    /* Остальные стили оставляем без изменений для сохранения вида */
     background: rgba(255, 255, 255, 0.9);
     border: 1px solid #ff9a9e;
-    /* Добавили нежную рамочку */
     border-radius: 50%;
-    width: 36px;
-    /* Сделали чуть больше, чтобы легче попадать мышкой */
-    height: 36px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    font-size: 1.2rem;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
     transition: transform 0.1s ease;
+    padding: 0;
+    /* Уберем padding, если он есть */
 }
 
 .action-icon-btn:hover {
