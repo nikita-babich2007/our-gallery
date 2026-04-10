@@ -5,16 +5,14 @@ import './UploadButton.css';
 const UploadButton = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [imageFile, setImageFile] = useState(null); 
-  const [previewUrl, setPreviewUrl] = useState(null); // НОВОЕ СТАТЕ ДЛЯ ПРЕВЬЮ
+  const [previewUrl, setPreviewUrl] = useState(null);
   const [caption, setCaption] = useState('');
   const [isSending, setIsSending] = useState(false);
 
-  // Функция для обработки выбора файла
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setImageFile(file);
-      // Создаем временную ссылку на картинку, чтобы показать её до отправки на сервер
       setPreviewUrl(URL.createObjectURL(file)); 
     }
   };
@@ -32,7 +30,7 @@ const UploadButton = () => {
     formData.append('caption', caption);
 
     try {
-      const response = await fetch('http://localhost:5000/api/photos', {
+      const response = await fetch('https://our-gallery-backend.onrender.com/api/photos', {
         method: 'POST',
         body: formData, 
       });
@@ -40,7 +38,7 @@ const UploadButton = () => {
       if (response.ok) {
         setIsOpen(false);
         setImageFile(null);
-        setPreviewUrl(null); // Очищаем превью после успеха
+        setPreviewUrl(null);
         setCaption('');
         window.location.reload(); 
       } else {
@@ -80,11 +78,10 @@ const UploadButton = () => {
               <input 
                 type="file" 
                 accept="image/*" 
-                onChange={handleFileChange} // Используем новую функцию
+                onChange={handleFileChange}
                 style={{ marginBottom: previewUrl ? '10px' : '20px' }}
               />
 
-              {/* ЕСЛИ ЕСТЬ ПРЕВЬЮ - ПОКАЗЫВАЕМ ЕГО */}
               {previewUrl && (
                 <div className="preview-container">
                   <img src={previewUrl} alt="Превью" className="image-preview" />
