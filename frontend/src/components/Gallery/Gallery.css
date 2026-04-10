@@ -1,12 +1,25 @@
+/* 1. Настраиваем общий контейнер сетки (горизонтальный отступ) */
 .my-masonry-grid {
     display: flex;
-    margin-left: -30px;
+    margin-left: -25px;
+    /* Размер "воздуха" между колонками (с минусом) */
     width: auto;
 }
 
+/* 2. Настраиваем сами колонки */
 .my-masonry-grid_column {
-    padding-left: 30px;
+    padding-left: 25px;
+    /* ТОТ ЖЕ размер "воздуха", но с плюсом */
     background-clip: padding-box;
+}
+
+/* 3. Настраиваем отступ СНИЗУ для каждой карточки (вертикальный отступ) */
+.polaroid-wrapper {
+    position: relative;
+    width: 100%;
+    margin-bottom: 25px;
+    /* Увеличили отступ снизу! */
+    transition: all 0.3s ease;
 }
 
 /* --- СТИЛИ ДЛЯ КРАСИВОГО ОКНА УДАЛЕНИЯ --- */
