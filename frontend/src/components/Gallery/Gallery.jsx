@@ -88,9 +88,17 @@ const Gallery = () => {
                 <button 
                   className="action-icon-btn edit-icon"
                   onClick={(e) => {
-                    e.stopPropagation(); // <--- ВОТ ЭТО
+                    e.stopPropagation();
                     setEditingId(photo._id);
-                    setEditText(photo.caption || photo.text || '');
+                    setEditText(photo.text || photo.caption || '');
+
+                    // МАГИЯ СКРОЛЛА: Ждем 100 мс, пока React нарисует инпут, и плавно едем к нему
+                    setTimeout(() => {
+                      const editBox = document.getElementById(`edit-container-${photo._id}`);
+                      if (editBox) {
+                        editBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                      }
+                    }, 100);
                   }}
                   title="Изменить текст"
                 >
@@ -111,7 +119,7 @@ const Gallery = () => {
 
               {/* Режим редактирования появляется под карточкой */}
               {editingId === photo._id && (
-                <div className="edit-mode-container">
+                <div className="edit-mode-container" id={`edit-container-${photo._id}`}>
                   <input 
                     type="text" 
                     className="edit-input"
