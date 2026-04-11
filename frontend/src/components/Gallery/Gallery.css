@@ -1,28 +1,81 @@
-/* 1. Настраиваем общий контейнер сетки (горизонтальный отступ) */
 .my-masonry-grid {
     display: flex;
     margin-left: -25px;
-    /* Размер "воздуха" между колонками (с минусом) */
     width: auto;
 }
 
-/* 2. Настраиваем сами колонки */
 .my-masonry-grid_column {
     padding-left: 25px;
-    /* ТОТ ЖЕ размер "воздуха", но с плюсом */
     background-clip: padding-box;
 }
 
-/* 3. Настраиваем отступ СНИЗУ для каждой карточки (вертикальный отступ) */
 .polaroid-wrapper {
     position: relative;
     width: 100%;
     margin-bottom: 25px;
-    /* Увеличили отступ снизу! */
     transition: all 0.3s ease;
 }
 
-/* --- СТИЛИ ДЛЯ КРАСИВОГО ОКНА УДАЛЕНИЯ --- */
+.polaroid-actions {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    display: flex;
+    gap: 10px;
+    z-index: 50;
+    opacity: 0.3;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.polaroid-wrapper:hover .polaroid-actions,
+.polaroid-actions.active {
+    opacity: 1;
+}
+
+.action-icon-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #ff9a9e;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transition: transform 0.1s ease, background 0.2s ease;
+    padding: 0;
+}
+
+.action-icon-btn:hover {
+    background: #ffffff;
+    transform: scale(1.1);
+}
+
+.edit-mode-container {
+    margin-top: 10px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.edit-input {
+    width: 90%;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #ff9a9e;
+    font-family: 'Caveat', cursive;
+    font-size: 1.1rem;
+}
+
+.edit-buttons {
+    display: flex;
+    gap: 10px;
+}
+
 .confirm-overlay {
     position: fixed;
     top: 0;
@@ -35,11 +88,10 @@
     justify-content: center;
     align-items: center;
     z-index: 3000;
-    /* Поверх всего */
 }
 
 .confirm-box {
-    background: white;
+    background: #ffffff;
     padding: 30px;
     border-radius: 20px;
     text-align: center;
@@ -47,7 +99,6 @@
     border: 2px solid #ffe1e3;
     max-width: 300px;
     animation: popIn 0.3s ease forwards;
-    /* Анимация появления */
 }
 
 .confirm-box p {
@@ -86,7 +137,7 @@
 
 .btn-yes {
     background: #ff6b70;
-    color: white;
+    color: #ffffff;
 }
 
 .btn-yes:hover {
@@ -107,161 +158,6 @@
     }
 }
 
-/* Gallery.css */
-
-/* Основной контейнер для карточки и кнопок действий над ней */
-.polaroid-wrapper {
-    position: relative;
-    /* Критично для позиционирования иконок */
-    width: 100%;
-    transition: transform 0.3s ease;
-}
-
-/* Эффект легкого увеличения при наведении на всю карточку */
-.polaroid-wrapper:hover {
-    transform: scale(1.02);
-    z-index: 10;
-    /* Чтобы карточка была поверх соседних */
-}
-
-/* Контейнер для иконок действий (карандаш и крестик) */
-.polaroid-actions {
-    position: absolute;
-    top: 10px;
-    /* Отступ сверху */
-    right: 10px;
-    /* Отступ справа */
-    display: flex;
-    gap: 8px;
-    /* Расстояние между иконками */
-    z-index: 5;
-
-    /* ХИТРОСТЬ: по умолчанию они невидимы и прозрачны */
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-    /* Плавное появление */
-}
-
-/* ЛОГИКА HOVER: когда мы наводим на .polaroid-wrapper,
-   мы показываем .polaroid-actions внутри него */
-.polaroid-wrapper:hover .polaroid-actions {
-    opacity: 1;
-    visibility: visible;
-}
-
-/* Стили для самих иконок-кнопок */
-.action-icon-btn {
-    background: rgba(255, 255, 255, 0.8);
-    /* Полупрозрачный фон */
-    border: none;
-    border-radius: 50%;
-    /* Делаем их круглыми */
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 1.1rem;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    transition: background 0.2s ease;
-}
-
-/* Эффект при наведении на саму иконку */
-.action-icon-btn:hover {
-    background: rgba(255, 255, 255, 1);
-    transform: scale(1.1);
-}
-
-/* Стили для режима редактирования (инпут под фото) */
-.edit-mode-container {
-    margin-top: 10px;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
-}
-
-.edit-input {
-    width: 90%;
-    padding: 8px;
-    border-radius: 8px;
-    border: 1px solid #ff9a9e;
-    font-family: 'Caveat', cursive;
-    font-size: 1.1rem;
-}
-
-.edit-buttons {
-    display: flex;
-    gap: 10px;
-}
-
-/* Gallery.css */
-
-.polaroid-wrapper {
-    position: relative;
-    width: 100%;
-    /* Убрали scale, чтобы карточка не дергалась под мышкой */
-    transition: all 0.3s ease;
-}
-
-.polaroid-actions {
-    position: absolute;
-    top: 15px;
-    /* Чуть ниже, чтобы точно попадать */
-    right: 15px;
-    display: flex;
-    gap: 10px;
-    z-index: 50;
-    /* Подняли в самый верх, чтобы 100% нажималось */
-
-    /* По умолчанию кнопки немного прозрачные, чтобы не мозолить глаза */
-    opacity: 0.3;
-    transition: opacity 0.2s ease-in-out;
-}
-
-/* При наведении делаем их яркими */
-.polaroid-wrapper:hover .polaroid-actions {
-    opacity: 1;
-}
-
-/* Если мы в режиме редактирования - кнопки всегда яркие */
-.polaroid-actions.active {
-    opacity: 1;
-}
-
-/* Gallery.css */
-
-.action-icon-btn {
-    /* Уменьшим размер самой круглой кнопки (например, с 36px до 32px) */
-    width: 32px;
-    height: 32px;
-
-    /* Немного уменьшим размер шрифта иконки (например, с 1.2rem до 1rem) */
-    font-size: 1rem;
-
-    /* Остальные стили оставляем без изменений для сохранения вида */
-    background: rgba(255, 255, 255, 0.9);
-    border: 1px solid #ff9a9e;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    transition: transform 0.1s ease;
-    padding: 0;
-    /* Уберем padding, если он есть */
-}
-
-.action-icon-btn:hover {
-    transform: scale(1.1);
-    /* Сама кнопка чуть увеличивается при наведении */
-}
-
-/* МАГИЯ ДЛЯ ТЕЛЕФОНОВ: На мобилках кнопки всегда четко видны (opacity 0.8) */
 @media (max-width: 768px) {
     .polaroid-actions {
         opacity: 0.8;
