@@ -56,3 +56,22 @@
     opacity: 1;
     color: #ff9a9e;
 }
+
+/* --- МОБИЛЬНЫЕ ПОЛАРОИДЫ --- */
+@media (max-width: 500px) {
+    .polaroid-card {
+        padding: 5px;
+        padding-bottom: 20px;
+        border-radius: 2px;
+    }
+
+    .image-container {
+        margin-bottom: 5px;
+    }
+
+    .polaroid-caption {
+        font-size: 0.9rem;
+        /* Уменьшаем шрифт подписи */
+        margin-top: 5px;
+    }
+}

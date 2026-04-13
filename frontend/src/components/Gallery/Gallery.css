@@ -221,3 +221,38 @@
         opacity: 0.6;
     }
 }
+
+/* --- АДАПТАЦИЯ ПОД ТЕЛЕФОНЫ (Стиль Pinterest) --- */
+@media (max-width: 500px) {
+    .my-masonry-grid {
+        margin-left: -10px;
+    }
+
+    .my-masonry-grid_column {
+        padding-left: 10px;
+    }
+
+    .polaroid-wrapper {
+        margin-bottom: 10px;
+    }
+
+    .polaroid-actions {
+        top: 5px;
+        right: 5px;
+        gap: 5px;
+    }
+
+    .action-icon-btn {
+        width: 26px;
+        height: 26px;
+        font-size: 0.8rem;
+    }
+
+    .heart-loader {
+        font-size: 3rem;
+    }
+
+    .loader-container p {
+        font-size: 1.3rem;
+    }
+}

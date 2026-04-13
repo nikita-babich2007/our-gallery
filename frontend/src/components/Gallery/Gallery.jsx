@@ -64,7 +64,7 @@ const Gallery = () => {
     }
   };
 
-  const breakpointColumnsObj = { default: 4, 1200: 3, 992: 3, 768: 2, 500: 1 };
+  const breakpointColumnsObj = { default: 4, 1200: 3, 992: 3, 768: 2, 500: 2 };
 
   return (
     <div className="gallery-container">
