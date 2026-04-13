@@ -5,15 +5,20 @@
     margin-bottom: 50px;
     min-height: 80px;
     text-align: center;
+    padding: 0 15px;
 }
 
 .hero-title {
     font-family: 'Georgia', serif;
     color: #333;
     font-weight: normal;
-    letter-spacing: 2px;
-    font-size: 2.5rem;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    letter-spacing: 1px;
+    font-size: clamp(1.6rem, 5vw, 2.5rem);
+    line-height: 1.4;
+    text-align: center;
+}
+
+.animated-letter {
+    display: inline-block;
+    white-space: pre-wrap;
 }

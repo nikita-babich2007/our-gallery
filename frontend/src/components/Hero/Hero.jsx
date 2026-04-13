@@ -3,7 +3,9 @@ import { motion } from 'framer-motion';
 import './Hero.css';
 
 const Hero = ({ startTyping }) => {
-  const text = "Привет, это наша галерея... ❤️";
+  // Используем обычный пробел, но перед сердечком ставим неразрывный пробел, 
+  // чтобы оно не отрывалось от точек и не улетало на новую строку в одиночестве.
+  const text = "Привет, это наша галерея...\u00A0❤️";
   const letters = Array.from(text);
 
   const container = {
@@ -39,8 +41,12 @@ const Hero = ({ startTyping }) => {
           animate="visible"
         >
           {letters.map((letter, index) => (
-            <motion.span variants={child} key={index}>
-              {letter === " " ? "\u00A0" : letter}
+            <motion.span 
+              variants={child} 
+              key={index} 
+              className="animated-letter"
+            >
+              {letter}
             </motion.span>
           ))}
         </motion.h1>
