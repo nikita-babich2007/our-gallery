@@ -10,12 +10,19 @@ const Gallery = () => {
   const [photoToDelete, setPhotoToDelete] = useState(null);
   const [editingId, setEditingId] = useState(null); 
   const [editText, setEditText] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetch('https://our-gallery-backend.onrender.com/api/photos')
       .then((res) => res.json())
-      .then((data) => setPhotos(data))
-      .catch((err) => console.error('Ошибка загрузки фото:', err));
+      .then((data) => {
+        setPhotos(data);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.error('Ошибка загрузки фото:', err);
+        setIsLoading(false);
+      });
   }, []);
 
   const executeDelete = async () => {
@@ -44,7 +51,6 @@ const Gallery = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        // ИЗМЕНИЛИ text на caption вот здесь:
         body: JSON.stringify({ caption: editText }),
       });
 
@@ -62,7 +68,12 @@ const Gallery = () => {
 
   return (
     <div className="gallery-container">
-      {photos.length === 0 ? (
+      {isLoading ? (
+        <div className="loader-container">
+          <div className="heart-loader">❤️</div>
+          <p>Вспоминаем наши моменты...</p>
+        </div>
+      ) : photos.length === 0 ? (
         <h2 style={{ textAlign: 'center', fontFamily: 'Caveat', color: '#ff9a9e' }}>
           Тут пока пусто... Добавь наше первое воспоминание! ❤️
         </h2>
@@ -73,17 +84,14 @@ const Gallery = () => {
           columnClassName="my-masonry-grid_column"
         >
           {photos.map((photo) => (
-            // ИСПОЛЬЗУЕМ НОВЫЙ CSS-КЛАСС
             <div key={photo._id} className="polaroid-wrapper">
               
               <PolaroidCard 
                 image={photo.imageUrl} 
                 caption={photo.text || photo.caption} 
                 onClick={() => setSelectedImage(photo.imageUrl)}
-                // onDelete УБРАЛИ ОТСЮДА! Мы управляем удалением снаружи
               />
 
-              {/* Вот наш новый контейнер с иконками, который виден только на ховере */}
               <div className="polaroid-actions">
                 <button 
                   className="action-icon-btn edit-icon"
@@ -92,7 +100,6 @@ const Gallery = () => {
                     setEditingId(photo._id);
                     setEditText(photo.text || photo.caption || '');
 
-                    // МАГИЯ СКРОЛЛА: Ждем 100 мс, пока React нарисует инпут, и плавно едем к нему
                     setTimeout(() => {
                       const editBox = document.getElementById(`edit-container-${photo._id}`);
                       if (editBox) {
@@ -108,7 +115,7 @@ const Gallery = () => {
                 <button 
                   className="action-icon-btn delete-icon"
                   onClick={(e) => {
-                    e.stopPropagation(); // <--- И ВОТ ЭТО
+                    e.stopPropagation();
                     setPhotoToDelete(photo._id);
                   }}
                   title="Удалить воспоминание"
@@ -117,7 +124,6 @@ const Gallery = () => {
                 </button>
               </div>
 
-              {/* Режим редактирования появляется под карточкой */}
               {editingId === photo._id && (
                 <div className="edit-mode-container" id={`edit-container-${photo._id}`}>
                   <input 
