@@ -23,8 +23,9 @@ const Gallery = () => {
       const res = await fetch(`https://our-gallery-backend.onrender.com/api/photos?page=${page}&limit=4`);
       const data = await res.json();
 
-      setPhotos(prev => page === 1 ? data.photos : [...prev, ...data.photos]);
-      setHasMore(data.hasMore);
+      const newPhotos = data.photos || []; 
+      setPhotos(prev => page === 1 ? newPhotos : [...prev, ...newPhotos]);
+      setHasMore(data.hasMore || false);
     } catch (err) {
       console.error('Ошибка загрузки фото:', err);
     } finally {
