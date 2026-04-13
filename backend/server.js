@@ -43,22 +43,35 @@ const Photo = mongoose.model('Photo', photoSchema);
 
 // --- 4. МАРШРУТЫ ---
 
+// ПОЛУЧЕНИЕ ФОТО ПОРЦИЯМИ (ПАГИНАЦИЯ)
 app.get('/api/photos', async (req, res) => {
     try {
-        const photos = await Photo.find().sort({ createdAt: -1 }); 
-        res.json(photos);
+        const page = parseInt(req.query.page) || 1; 
+        const limit = parseInt(req.query.limit) || 12; 
+        
+        const skip = (page - 1) * limit;
+
+        const photos = await Photo.find()
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(limit);
+
+        const totalPhotos = await Photo.countDocuments();
+
+        res.json({
+            photos: photos,
+            hasMore: skip + photos.length < totalPhotos
+        });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
 });
 
-// Загрузка фото ТЕПЕРЬ В ОБЛАКО
 app.post('/api/photos', upload.single('image'), async (req, res) => {
     if (!req.file) {
         return res.status(400).json({ message: 'Файл не загружен' });
     }
 
-    // ВАЖНО: Cloudinary сам генерирует ссылку на фото в интернете
     const imageUrl = req.file.path; 
 
     const photo = new Photo({
@@ -88,13 +101,12 @@ app.delete('/api/photos/:id', async (req, res) => {
     }
 });
 
-// ОБНОВЛЕНИЕ ТЕКСТА ФОТОГРАФИИ
 app.put('/api/photos/:id', async (req, res) => {
   try {
-    const { caption } = req.body; // ИЗМЕНИЛИ text на caption
+    const { caption } = req.body;
     const updatedPhoto = await Photo.findByIdAndUpdate(
       req.params.id,
-      { caption: caption },       // ИЗМЕНИЛИ text на caption
+      { caption: caption },
       { new: true }
     );
     res.json(updatedPhoto);
