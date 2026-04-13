@@ -154,3 +154,29 @@
     box-shadow: 0 5px 15px rgba(255, 154, 158, 0.3);
     border: 2px solid #ffe1e3;
 }
+
+/* --- СТИЛИ ДЛЯ КНОПКИ ВО ВРЕМЯ ЗАГРУЗКИ --- */
+
+.submit-btn:disabled,
+.submit-btn.sending {
+    background: #d3d3d3;
+    color: #777;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+    animation: pulse-loading 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse-loading {
+    0% {
+        opacity: 0.8;
+    }
+
+    50% {
+        opacity: 0.4;
+    }
+
+    100% {
+        opacity: 0.8;
+    }
+}

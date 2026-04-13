@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import imageCompression from 'browser-image-compression';
 import './UploadButton.css';
 
 const UploadButton = () => {
@@ -9,11 +10,25 @@ const UploadButton = () => {
   const [caption, setCaption] = useState('');
   const [isSending, setIsSending] = useState(false);
 
-  const handleFileChange = (e) => {
+  const handleFileChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      setImageFile(file);
       setPreviewUrl(URL.createObjectURL(file)); 
+
+      const options = {
+        maxSizeMB: 0.5,
+        maxWidthOrHeight: 1920,
+        useWebWorker: true,
+      };
+
+      try {
+        const compressedFile = await imageCompression(file, options);
+        console.log(`Было: ${(file.size / 1024 / 1024).toFixed(2)} МБ. Стало: ${(compressedFile.size / 1024 / 1024).toFixed(2)} МБ`);
+        setImageFile(compressedFile);
+      } catch (error) {
+        console.error('Ошибка при сжатии:', error);
+        setImageFile(file);
+      }
     }
   };
 
@@ -95,11 +110,11 @@ const UploadButton = () => {
               ></textarea>
               
               <button 
-                className="submit-btn" 
+                className={`submit-btn ${isSending ? 'sending' : ''}`} 
                 onClick={handleSave}
                 disabled={isSending}
               >
-                {isSending ? 'Загружаем...' : 'Сохранить в историю'}
+                {isSending ? 'Загружаем фото... ⏳' : 'Сохранить в историю'}
               </button>
 
             </motion.div>

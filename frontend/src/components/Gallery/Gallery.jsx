@@ -10,20 +10,47 @@ const Gallery = () => {
   const [photoToDelete, setPhotoToDelete] = useState(null);
   const [editingId, setEditingId] = useState(null); 
   const [editText, setEditText] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true); 
+  const [page, setPage] = useState(1);             
+  const [hasMore, setHasMore] = useState(true); 
+  const [isFetchingMore, setIsFetchingMore] = useState(false);
+
+  // Функция для скачивания конкретной страницы
+  const fetchPhotos = async () => {
+    try {
+      if (page > 1) setIsFetchingMore(true);
+
+      const res = await fetch(`https://our-gallery-backend.onrender.com/api/photos?page=${page}&limit=4`);
+      const data = await res.json();
+
+      setPhotos(prev => page === 1 ? data.photos : [...prev, ...data.photos]);
+      setHasMore(data.hasMore);
+    } catch (err) {
+      console.error('Ошибка загрузки фото:', err);
+    } finally {
+      setIsLoading(false);
+      setIsFetchingMore(false);
+    }
+  };
 
   useEffect(() => {
-    fetch('https://our-gallery-backend.onrender.com/api/photos')
-      .then((res) => res.json())
-      .then((data) => {
-        setPhotos(data);
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        console.error('Ошибка загрузки фото:', err);
-        setIsLoading(false);
-      });
-  }, []);
+    fetchPhotos();
+  }, [page]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 100
+      ) {
+        if (!isFetchingMore && hasMore) {
+          setPage(prevPage => prevPage + 1);
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isFetchingMore, hasMore]);
 
   const executeDelete = async () => {
     if (!photoToDelete) return;
@@ -158,6 +185,12 @@ const Gallery = () => {
               <button className="btn-yes" onClick={executeDelete}>Удалить</button>
             </div>
           </div>
+        </div>
+      )}
+
+      {isFetchingMore && (
+        <div style={{ textAlign: 'center', margin: '20px 0', fontFamily: 'Caveat', color: '#ff9a9e', fontSize: '1.5rem' }}>
+          Подгружаем воспоминания... ✨
         </div>
       )}
     </div>
