@@ -20,7 +20,7 @@ const Gallery = () => {
     try {
       if (page > 1) setIsFetchingMore(true);
 
-      const res = await fetch(`https://our-gallery-backend.onrender.com/api/photos?page=${page}&limit=4`);
+      const res = await fetch(`https://our-gallery-backend.onrender.com/api/photos?page=${page}&limit=12`);
       const data = await res.json();
 
       const newPhotos = data.photos || []; 
