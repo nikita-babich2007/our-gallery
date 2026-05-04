@@ -6,6 +6,15 @@ const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 require('dotenv').config();
 
+const webpush = require('web-push');
+
+// Настройка ключей web-push
+webpush.setVapidDetails(
+    process.env.VAPID_SUBJECT,
+    process.env.VAPID_PUBLIC_KEY,
+    process.env.VAPID_PRIVATE_KEY
+);
+
 const app = express();
 
 app.use(cors());
@@ -40,6 +49,16 @@ const photoSchema = new mongoose.Schema({
 });
 
 const Photo = mongoose.model('Photo', photoSchema);
+
+const subscriptionSchema = new mongoose.Schema({
+    endpoint: String,
+    expirationTime: Number,
+    keys: {
+        p256dh: String,
+        auth: String
+    }
+});
+const Subscription = mongoose.model('Subscription', subscriptionSchema);
 
 // --- 4. МАРШРУТЫ ---
 
@@ -81,9 +100,49 @@ app.post('/api/photos', upload.single('image'), async (req, res) => {
 
     try {
         const newPhoto = await photo.save();
+        // --- РАССЫЛКА ПУШЕЙ ВСЕМ ПОДПИСЧИКАМ ---
+        try {
+            const subscriptions = await Subscription.find();
+            const payload = JSON.stringify({
+                title: 'Новое воспоминание! ❤️',
+                body: 'Только что добавлено новое фото. Заходи посмотреть!',
+                icon: '/icon-heart-192x192.png', // Наше красивое сердечко
+                url: '/' // Куда перекинет при клике на уведомление
+            });
+
+            // Отправляем пуш каждому телефону в базе
+            subscriptions.forEach(sub => {
+                webpush.sendNotification(sub, payload).catch(err => {
+                    // Если телефон недоступен или удалил приложение — удаляем его из базы
+                    if (err.statusCode === 410) {
+                        Subscription.deleteOne({ endpoint: sub.endpoint }).exec();
+                    }
+                });
+            });
+        } catch (pushErr) {
+            console.error('Ошибка при рассылке:', pushErr);
+        }
+        // ----------------------------------------
         res.status(201).json(newPhoto);
     } catch (err) {
         res.status(400).json({ message: err.message });
+    }
+});
+
+// СОХРАНЕНИЕ ПОДПИСКИ НА УВЕДОМЛЕНИЯ
+app.post('/api/subscribe', async (req, res) => {
+    try {
+        const subscription = req.body;
+        
+        // Проверяем, есть ли уже такой телефон в базе, чтобы не спамить
+        const existing = await Subscription.findOne({ endpoint: subscription.endpoint });
+        if (!existing) {
+            await new Subscription(subscription).save();
+        }
+        res.status(201).json({ message: 'Подписка оформлена!' });
+    } catch (error) {
+        console.error('Ошибка подписки:', error);
+        res.status(500).json({ error: 'Ошибка сервера' });
     }
 });
 
