@@ -97,6 +97,21 @@ const Gallery = () => {
 
   return (
     <div className="gallery-container">
+      <button 
+        onClick={subscribeUserToPush}
+        style={{ 
+          background: 'none', 
+          border: '1px solid #ff9a9e', 
+          borderRadius: '20px', 
+          color: '#ff9a9e', 
+          padding: '5px 15px',
+          cursor: 'pointer',
+          fontFamily: 'Caveat'
+        }}
+      >
+        Включить уведомления ❤️
+      </button>
+      
       {isLoading ? (
         <div className="loader-container">
           <div className="heart-loader">❤️</div>
@@ -195,21 +210,6 @@ const Gallery = () => {
           Подгружаем воспоминания... ✨
         </div>
       )}
-
-      <button 
-        onClick={subscribeUserToPush}
-        style={{ 
-          background: 'none', 
-          border: '1px solid #ff9a9e', 
-          borderRadius: '20px', 
-          color: '#ff9a9e', 
-          padding: '5px 15px',
-          cursor: 'pointer',
-          fontFamily: 'Caveat'
-        }}
-      >
-        Включить уведомления ❤️
-      </button>
     </div>
   );
 };
