@@ -3,6 +3,7 @@ import Masonry from 'react-masonry-css';
 import PolaroidCard from '../PolaroidCard/PolaroidCard';
 import Modal from '../Modal/Modal';
 import './Gallery.css';
+import { subscribeUserToPush } from '../utils/subscribeToPush';
 
 const Gallery = () => {
   const [photos, setPhotos] = useState([]);
@@ -194,6 +195,21 @@ const Gallery = () => {
           Подгружаем воспоминания... ✨
         </div>
       )}
+
+      <button 
+        onClick={subscribeUserToPush}
+        style={{ 
+          background: 'none', 
+          border: '1px solid #ff9a9e', 
+          borderRadius: '20px', 
+          color: '#ff9a9e', 
+          padding: '5px 15px',
+          cursor: 'pointer',
+          fontFamily: 'Caveat'
+        }}
+      >
+        Включить уведомления ❤️
+      </button>
     </div>
   );
 };
