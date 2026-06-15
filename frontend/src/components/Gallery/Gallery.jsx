@@ -3,7 +3,7 @@ import Masonry from 'react-masonry-css';
 import PolaroidCard from '../PolaroidCard/PolaroidCard';
 import Modal from '../Modal/Modal';
 import './Gallery.css';
-import { subscribeUserToPush } from '../utils/subscribeToPush';
+import { subscribeUserToPush } from '../../utils/subscribeToPush';
 
 const Gallery = () => {
   const [photos, setPhotos] = useState([]);
@@ -15,6 +15,14 @@ const Gallery = () => {
   const [page, setPage] = useState(1);             
   const [hasMore, setHasMore] = useState(true); 
   const [isFetchingMore, setIsFetchingMore] = useState(false);
+  const [showNotifyBtn, setShowNotifyBtn] = useState(
+    'Notification' in window && window.Notification.permission !== 'granted'
+  );
+
+  const handleEnablePush = async () => {
+    await subscribeUserToPush(); // Запускаем подписку
+    setShowNotifyBtn(false);     // Прячем кнопку сразу после нажатия
+  };
 
   // Функция для скачивания конкретной страницы
   const fetchPhotos = async () => {
@@ -97,21 +105,27 @@ const Gallery = () => {
 
   return (
     <div className="gallery-container">
-      <button 
-        onClick={subscribeUserToPush}
-        style={{ 
-          background: 'none', 
-          border: '1px solid #ff9a9e', 
-          borderRadius: '20px', 
-          color: '#ff9a9e', 
-          padding: '5px 15px',
-          cursor: 'pointer',
-          fontFamily: 'Caveat'
-        }}
-      >
-        Включить уведомления ❤️
-      </button>
-      
+      {showNotifyBtn && (
+        <div style={{ textAlign: 'center', marginBottom: '30px' }}>
+          <button 
+            onClick={handleEnablePush}
+            style={{ 
+              background: 'none', 
+              border: '1px solid #ff9a9e', 
+              borderRadius: '20px', 
+              color: '#ff9a9e', 
+              padding: '8px 20px',
+              cursor: 'pointer',
+              fontFamily: 'Caveat',
+              fontSize: '1.2rem',
+              transition: 'all 0.3s ease'
+            }}
+          >
+            Включить уведомления ❤️
+          </button>
+        </div>
+      )}
+
       {isLoading ? (
         <div className="loader-container">
           <div className="heart-loader">❤️</div>

@@ -1,4 +1,4 @@
-import React from 'react';
+import {useEffect} from 'react';
 import Home from './pages/Home/Home';
 import './App.css';
 
@@ -10,7 +10,7 @@ function App() {
         .catch(err => console.log('Ошибка регистрации SW:', err));
     }
   }, []);
-  
+
   return <Home />;
 }
 
