@@ -31,7 +31,7 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
     params: {
-        folder: 'our_gallery', // Так будет называться папка внутри твоего Cloudinary
+        folder: 'our_gallery', 
         allowedFormats: ['jpeg', 'png', 'jpg', 'webp'],
     },
 });
@@ -100,29 +100,34 @@ app.post('/api/photos', upload.single('image'), async (req, res) => {
 
     try {
         const newPhoto = await photo.save();
-        // --- РАССЫЛКА ПУШЕЙ ВСЕМ ПОДПИСЧИКАМ ---
+        
+        // --- РАССЫЛКА ПУШЕЙ (С ФИЛЬТРАЦИЕЙ ОТПРАВИТЕЛЯ) ---
         try {
             const subscriptions = await Subscription.find();
+            const uploaderEndpoint = req.body.uploaderEndpoint; 
+
             const payload = JSON.stringify({
                 title: 'Новое воспоминание! ❤️',
                 body: 'Только что добавлено новое фото. Заходи посмотреть!',
-                icon: '/icon-heart-192x192.png', // Наше красивое сердечко
-                url: '/' // Куда перекинет при клике на уведомление
+                icon: '/icon-heart-192x192.png', 
+                url: '/' 
             });
 
-            // Отправляем пуш каждому телефону в базе
             subscriptions.forEach(sub => {
-                webpush.sendNotification(sub, payload).catch(err => {
-                    // Если телефон недоступен или удалил приложение — удаляем его из базы
-                    if (err.statusCode === 410) {
-                        Subscription.deleteOne({ endpoint: sub.endpoint }).exec();
-                    }
-                });
+                // Отправляем пуш только если этот телефон НЕ является отправителем фото
+                if (sub.endpoint !== uploaderEndpoint) {
+                    webpush.sendNotification(sub, payload).catch(err => {
+                        if (err.statusCode === 410) {
+                            Subscription.deleteOne({ endpoint: sub.endpoint }).exec();
+                        }
+                    });
+                }
             });
         } catch (pushErr) {
             console.error('Ошибка при рассылке:', pushErr);
         }
-        // ----------------------------------------
+        // ----------------------------------------------------
+        
         res.status(201).json(newPhoto);
     } catch (err) {
         res.status(400).json({ message: err.message });
@@ -134,7 +139,6 @@ app.post('/api/subscribe', async (req, res) => {
     try {
         const subscription = req.body;
         
-        // Проверяем, есть ли уже такой телефон в базе, чтобы не спамить
         const existing = await Subscription.findOne({ endpoint: subscription.endpoint });
         if (!existing) {
             await new Subscription(subscription).save();

@@ -16,7 +16,6 @@ export async function subscribeUserToPush() {
         const registration = await navigator.serviceWorker.ready;
 
         // 2. Подписываем пользователя
-        // ВАЖНО: Вставь сюда свой ПУБЛИЧНЫЙ КЛЮЧ из .env бэкенда
         const vapidPublicKey = 'BL_Xdg3x1bEOsBwu5yCcliuk-Gy7ejIrr8poqyT83OxFG_mLCiMCCUihwltZtXTtYKV-hYSbilApBXTS0AU68-o'; 
         const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey);
 

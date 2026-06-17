@@ -13,7 +13,6 @@ const Modal = ({ image, onClose }) => {
         onClick={(e) => e.stopPropagation()} // Чтобы клик по самой фотке не закрывал окно
       >
         <button className="modal-close" onClick={onClose}>×</button>
-        {/* ВОТ ТУТ ГЛАВНОЕ ИЗМЕНЕНИЕ: просто src={image} */}
         <img src={image} alt="Увеличенное фото" className="modal-image" />
       </motion.div>
     </div>

@@ -40,9 +40,28 @@ const UploadButton = () => {
 
     setIsSending(true);
 
+    // Достаем ID нашего телефона, чтобы не отправлять пуш самому себе
+    let currentEndpoint = '';
+    if ('serviceWorker' in navigator) {
+      try {
+        const reg = await navigator.serviceWorker.ready;
+        const sub = await reg.pushManager.getSubscription();
+        if (sub) {
+          currentEndpoint = sub.endpoint;
+        }
+      } catch (err) {
+        console.error('Не удалось получить подписку:', err);
+      }
+    }
+
     const formData = new FormData();
     formData.append('image', imageFile);
     formData.append('caption', caption);
+    
+    // Передаем наш ID на сервер
+    if (currentEndpoint) {
+      formData.append('uploaderEndpoint', currentEndpoint);
+    }
 
     try {
       const response = await fetch('https://our-gallery-backend.onrender.com/api/photos', {
